@@ -69,7 +69,7 @@ __uint128_t generateMAC(struct LeiAState *state, __uint128_t data)
 {
 
     struct AES_ctx ctx;
-    uint8 i;
+    uint8_t i;
     __uint128_t MAC = 0;
 
     updateCounters(state);
@@ -102,7 +102,11 @@ Returns:
     1 -> Resync SUCCEEDED
     0 -> Resync FAILED
 */
-uint8_t resyncOfReceiver(struct LeiAState *state, uint64_t senderEpoch, uint16_t senderCounter, __uint128_t senderMAC)
+
+uint8_t resyncOfReceiver(struct LeiAState *state,
+                         uint64_t senderEpoch,
+                         uint16_t senderCounter,
+                         __uint128_t senderMAC)
 {
     __uint128_t senderValue, receiverValue, receiverMAC;
     uint16_t originalEpoch = state->epoch;
@@ -139,7 +143,10 @@ __uint128_t resyncOfSender(struct LeiAState *state)
 /*
 Verify Authentication on the sender side
 */
-uint8_t authenticate(struct LeiAState *state, __uint128_t data, __uint128_t senderMAC)
+
+uint8_t authenticate(struct LeiAState *state,
+                     __uint128_t data,
+                     __uint128_t senderMAC)
 {
     uint64_t originalEpoch = state->epoch;
     uint16_t originalCounter = state->counter;
