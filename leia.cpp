@@ -109,7 +109,7 @@ Returns:
         this->epoch = senderEpoch;
         this->generateSessionKey();
         receiverMAC = this->generateMAC(senderValue);
-        if (memcmp(senderMAC, receiverMAC.data(), 8))
+        if (memcmp(senderMAC, receiverMAC.data(), 8) == 0)
         {
             this->counter = senderCounter;
             return SUCCESS;
@@ -156,7 +156,7 @@ Verify Authentication on the sender side
     this->updateCounters();
     MAC = this->generateMAC(data);
 
-    if (memcmp(MAC.data(), senderMAC, BYTES))
+    if (memcmp(MAC.data(), senderMAC, BYTES) == 0)
     {
         return SUCCESS;
     }
