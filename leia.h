@@ -60,6 +60,10 @@ namespace leia
         {
             return this->counter;
         }
+        uint64_t getEpoch()
+        {
+            return this->epoch;
+        }
         bool resyncOfReceiver(uint64_t senderEpoch,
                               uint16_t senderCounter,
                               uint8_t senderMAC[]);

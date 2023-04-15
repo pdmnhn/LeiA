@@ -109,7 +109,7 @@ Returns:
         this->epoch = senderEpoch;
         this->generateSessionKey();
         receiverMAC = this->generateMAC(senderValue);
-        if (memcmp(senderMAC, receiverMAC.data(), BYTES))
+        if (memcmp(senderMAC, receiverMAC.data(), 8))
         {
             this->counter = senderCounter;
             return SUCCESS;
@@ -135,7 +135,6 @@ vector<uint8_t> LeiAState::resyncOfSender()
         senderValue[BYTES - (i + 3)] = (this->epoch >> (i * 8)) & 0xFF;
     }
 
-    this->epoch << 16 | this->counter;
     this->updateCounters();
     return this->generateMAC(senderValue);
 }
