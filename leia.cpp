@@ -1,4 +1,5 @@
 #include <cstring>
+#include <iostream>
 #include "leia.h"
 
 using namespace leia;
@@ -9,12 +10,11 @@ void LeiAState::generateSessionKey()
 
     for (uint8_t i = 0; i < BYTES; i++)
     {
-        in[i] = (this->epoch >> (i * 8)) & 0xFF;
+        this->sessionKey[i] = (this->epoch >> (i * 8)) & 0xFF;
     }
 
     AES_init_ctx(&ctx, LONG_TERM_KEY);
-    AES_ECB_encrypt(&ctx, in);
-    memcpy(this->sessionKey, in, BYTES);
+    AES_ECB_encrypt(&ctx, this->sessionKey);
 }
 
 void LeiAState::updateCounters()
@@ -58,16 +58,11 @@ Params:
 {
     struct AES_ctx ctx;
     uint8_t i;
-
-    memcpy(in, data, BYTES);
-
-    AES_init_ctx(&ctx, key);
-    AES_ECB_encrypt(&ctx, in);
-
     vector<uint8_t> MAC(BYTES);
+    memcpy(MAC.data(), data, BYTES);
 
-    memcpy(MAC.data(), in, 8);
-    memcpy(MAC.data() + 8, in, 8);
+    AES_init_ctx(&ctx, this->sessionKey);
+    AES_ECB_encrypt(&ctx, MAC.data());
 
     this->updateCounters();
 
@@ -155,6 +150,13 @@ Verify Authentication on the sender side
 
     this->updateCounters();
     MAC = this->generateMAC(data);
+
+    std::cout << "Received MAC ---------- Generated MAC" << endl;
+    for (size_t i = 0; i < 16U; i++)
+    {
+        cout << (int)senderMAC[i] << " ---------- " << (int)MAC[i] << endl;
+    }
+    std::cout << "------------------------------" << endl;
 
     if (memcmp(MAC.data(), senderMAC, BYTES) == 0)
     {

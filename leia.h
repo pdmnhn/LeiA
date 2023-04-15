@@ -19,8 +19,6 @@ namespace leia
     const static bool SUCCESS = true;
     const static bool FAILURE = false;
 
-    static uint8_t key[BYTES], in[BYTES]; // 128-bit AES
-
     enum LeiACommand : uint8_t
     {
         DATA = 0b00,
