@@ -1,1 +1,0 @@
-gcc main.c library.c -o execProgram -Wall
