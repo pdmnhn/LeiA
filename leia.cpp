@@ -1,5 +1,4 @@
 #include <cstring>
-#include <iostream>
 #include "leia.h"
 
 using namespace leia;
