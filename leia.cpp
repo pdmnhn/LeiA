@@ -57,7 +57,6 @@ Params:
 */
 {
     struct AES_ctx ctx;
-    uint8_t i;
     vector<uint8_t> MAC(BYTES);
     memcpy(MAC.data(), data, BYTES);
 
@@ -146,17 +145,8 @@ Verify Authentication on the sender side
 {
     uint64_t originalEpoch = this->epoch;
     uint16_t originalCounter = this->counter;
-    vector<uint8_t> MAC;
-
-    this->updateCounters();
-    MAC = this->generateMAC(data);
-
-    std::cout << "Received MAC ---------- Generated MAC" << endl;
-    for (size_t i = 0; i < 16U; i++)
-    {
-        cout << (int)senderMAC[i] << " ---------- " << (int)MAC[i] << endl;
-    }
-    std::cout << "------------------------------" << endl;
+    vector<uint8_t> MAC = this->generateMAC(data);
+    memcpy(MAC.data() + 8, MAC.data(), 8);
 
     if (memcmp(MAC.data(), senderMAC, BYTES) == 0)
     {
