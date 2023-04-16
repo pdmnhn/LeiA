@@ -79,10 +79,9 @@ Returns:
     false -> Resync FAILED
 */
 {
-    uint8_t senderValue[9] = {0}, receiverValue[9] = {0};
+    uint8_t senderValue[BYTES] = {0}, receiverValue[BYTES] = {0};
 
-    vector<uint8_t> receiverMAC;
-    uint16_t originalEpoch = this->epoch;
+    uint64_t originalEpoch = this->epoch;
 
     senderValue[BYTES - 1] = senderCounter & 0xFF;
     senderValue[BYTES - 2] = (senderCounter >> 8) & 0xFF;
@@ -101,7 +100,7 @@ Returns:
     {
         this->epoch = senderEpoch;
         this->generateSessionKey();
-        receiverMAC = this->generateMAC(senderValue);
+        vector<uint8_t> receiverMAC = this->generateMAC(senderValue);
         if (memcmp(senderMAC, receiverMAC.data(), 8) == 0)
         {
             this->counter = senderCounter;
@@ -128,7 +127,6 @@ vector<uint8_t> LeiAState::resyncOfSender()
         senderValue[BYTES - (i + 3)] = (this->epoch >> (i * 8)) & 0xFF;
     }
 
-    this->updateCounters();
     return this->generateMAC(senderValue);
 }
 
