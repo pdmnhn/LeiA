@@ -96,7 +96,7 @@ Returns:
     }
 
     // receiverValue < senderValue
-    if (memcmp(receiverValue, senderValue, 9) < 0)
+    if (memcmp(receiverValue, senderValue, BYTES) < 0)
     {
         this->epoch = senderEpoch;
         this->generateSessionKey();
