@@ -137,7 +137,7 @@ Params:
     data[] -> an array of size 16
     senderMAC[] -> an array of size 16
 
-Verify Authentication on the sender side
+Verify Authentication on the receiver side
 */
 {
     uint64_t originalEpoch = this->epoch;
